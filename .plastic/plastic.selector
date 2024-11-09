@@ -1,0 +1,4 @@
+repository "2dBasicFighter@Yiamo@cloud"
+  path "/"
+    br "/main"
+    co "/main"

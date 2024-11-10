@@ -9,11 +9,13 @@ public class PlayerMovement : MonoBehaviour
     public int maxJumps = 2;
 
     private Rigidbody2D rb;
+    private Animator anim;
     private int jumpCount = 0;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -24,12 +26,24 @@ public class PlayerMovement : MonoBehaviour
         float moveInput = Input.GetAxisRaw("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
+        //Flip the player sprite based on the direction of movement
+        if (moveInput > 0.01f)
+        {
+            transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
+        }
+        else if (moveInput < -0.01f)
+        {
+            transform.localScale = new Vector3(-3.5f, 3.5f, 3.5f);
+        }   
+
         //Jumping Logic
         if (Input.GetKeyDown(KeyCode.Space) && jumpCount < maxJumps)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             jumpCount++;
         }
+
+        anim.SetBool("run", moveInput != 0);
 
     }
     
@@ -40,4 +54,6 @@ public class PlayerMovement : MonoBehaviour
             jumpCount = 0;
         }
     }
+
+    
 }
